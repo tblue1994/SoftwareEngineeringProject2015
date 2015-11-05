@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="WindowsPhoneApp.TeamPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsPhoneApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Name="Home" Icon="Home" Label="Home" Visibility="Visible" Click="HomeTapped"/>
+                <AppBarButton Name="JoinButton" Icon="Accept" Label="Join" Visibility="Collapsed" Click="AppBarButton_Click_Join"/>
+                <AppBarButton Name="LeaveButton" Icon="Clear" Label="Leave" Visibility="Collapsed" Click="AppBarButton_Click_Leave"/>
+                <AppBarButton Name="InviteButton" Icon="AddFriend" Label="Invite" Visibility="Collapsed" Click="ClickInvite"/>
+                <AppBarButton Name="Edit" Icon="Edit" Label="Edit" Visibility="Collapsed" Click="Edit_Click"/>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Name="GiveAdmin" Label="Make someone admin" Visibility="Collapsed" Click="GiveAdmin_Click"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid>
+        <Pivot Title="Pivot">
+            <PivotItem Header="Herd">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"  Name="TeamName" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="36"/>
+                    <ScrollViewer Grid.Row="1">
+                        <StackPanel Name="Feed" HorizontalAlignment="Stretch" Height="458"></StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Members">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Members:" FontSize="30"/>
+                    <ListView Grid.Row="1" Name="Members"/>
+                    <TextBlock Grid.Row="2" Text="Invited:" FontSize="30" Name="InviteLabel"/>
+                    <ListView Grid.Row="3" Name="Invited"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Leaderboard">
+                <StackPanel>
+                    <ComboBox Name="LeaderMetric" SelectedIndex="0" SelectionChanged="MetricChanged">
+                        <ComboBoxItem Content="Distance"/>
+                        <ComboBoxItem Content="Attainments"/>
+                    </ComboBox>
+                    <ListView Name="Leaders"/>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+
+    </Grid>
+</Page>

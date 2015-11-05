@@ -1,0 +1,355 @@
+﻿@model Website.ViewModels.TeamDashboardViewModel
+@using Website.ViewModels
+
+@{
+    ViewBag.Title = "Team Dashboard";
+}
+
+<h2>Team @Html.DisplayFor(model => model.Name)'s Dashboard</h2>
+<pre id="BarCsv" style="display:none">@(Model.BarCSV)</pre>
+<pre id="PieCsv" style="display:none">@(Model.PieCSV)</pre>
+<pre id="LineCsv" style="display:none">@(Model.LineCSV)</pre>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal"></dl>
+    <form action="/TeamInfo/TeamInformation/@Model.Id">
+        <button type="submit" style="height:30px; width:100px">Members</button>
+    </form>
+    <br>
+
+</div>
+<p>
+    @Html.ActionLink("View All Teams", "ViewAllTeams")
+</p>
+
+
+<!-- Chart Content -->
+<script type="text/javascript">
+    $(function () {
+
+        spchart = renderSpchart("spchart");
+        linechart = renderLinechart("linechart");
+        piechart = renderPiechart("piechart");
+        columnchart = renderColumnchart("columnchart");
+    });
+</script>
+
+<table>
+    <tr>
+        <td><div id="spchart" style="height: 420px; width:420px; margin: 0 auto" /></td>
+        <td><div id="linechart" style="height: 420px; width:420px; margin: 0 auto" /></td>
+        <td><div id="piechart" style="height: 420px; width:420px; margin: 0 auto" /></td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="loadChartOnModal('spchart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+        <td>
+            <button onclick="loadChartOnModal('linechart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+        <td>
+            <button onclick="loadChartOnModal('piechart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td><div id="columnchart" style="height: 420px; width:420px; margin: 0 auto" /></td>
+        <td>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Badges Leaderboard</div>
+                <div class="panel-body" style="min-height:300px">
+                    <table>
+                        @{
+                            int count = 1;
+                            foreach (LeaderDisplay ld in Model.Achievement)
+                            {
+                                <tr>
+                                    <td>
+                                        <b>@count.@ld.AccountName:</b>
+                                    </td>
+                                    <td style="padding-left:50px">
+                                        @ld.Value
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+        </td>
+        <td>
+            <div style="padding-left:20px">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Distance Leaderboard</div>
+                    <div class="panel-body" style="min-height:300px">
+                        <table>
+                            @{
+                                count = 1;
+                                foreach (LeaderDisplay ld in Model.Distance)
+                                {
+                                    <tr>
+                                        <td>
+                                            <b>@count.@ld.AccountName:</b>                                          
+                                        </td>
+                                        <td style="padding-left:50px">
+                                            @Math.Round(ld.Value)miles
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }                                
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="loadChartOnModal('columnchart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+    </tr>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="min-width:650px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body" style"display:block; margin:0 auto;">
+                <div id="mchart"></div>
+            </div>
+            <div class="modal-shared-content">
+                <!-- Edit Facebook Shared Content Here-->
+            </div>
+            <!--
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            -->
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').focus();
+
+    })
+
+    function loadChartOnModal(chartName) {
+        switch (chartName) {
+            case "spchart":
+                modalchart = renderSpchart("mchart");
+
+                $('.modal-body').find('#highcharts-0').css('margin', '0 auto');
+                break;
+            case "linechart":
+                modalchart = renderLinechart("mchart");
+                $('.modal-body').find('#highcharts-4').css('margin', '0 auto');
+                break;
+            case "piechart":
+                modalchart = renderPiechart("mchart");
+                $('.modal-body').find('#highcharts-8').css('margin', '0 auto');
+                break;
+            case 'columnchart':
+                modalchart = renderColumnchart("mchart");
+                $('.modal-body').find('#highcharts-10').css('margin', '0 auto');
+                break;
+        }
+    }
+
+    function renderSpchart(containerID) {
+        spchart = new Highcharts.Chart({
+            chart: {
+                type: 'scatter',
+                zoomType: 'xy',
+                renderTo: containerID
+            },
+            legend: {
+                enabled: false
+            },
+            title: {
+                text: 'Members by Average Duration vs. Average Distance'
+            },
+            xAxis: {
+                title: {
+                    text: 'Average Daily Duration'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Average Daily Distance'
+                }
+            },
+            plotOptions: {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        pointFormat: '{point.x} Hours, {point.y} Miles'
+                    }
+                }
+            },
+            series: [
+                @foreach (ScatterDisplay sd in Model.Scatter)
+                {
+                    <text>
+                    {
+                        name: '@sd.Name',
+                        data: [[@sd.Distance, @sd.Duration]]
+                    },
+                    </text>
+                }
+
+            ]
+
+
+        });
+        return spchart;
+    }
+
+    function renderLinechart(containerID) {
+        linechart = new Highcharts.Chart({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                renderTo: containerID
+            },
+            title: {
+                text: 'Weekly Total Steps by Member',
+                x: -20 //center
+            },
+            yAxis: {
+                title: {
+                    text: 'Steps'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                valueSuffix: 'Steps'
+            },
+            data: {
+                dateFormat: 'mm/dd/YYYY',
+                csv: document.getElementById('LineCsv').innerHTML
+            }
+        });
+        return linechart;
+    }
+
+    function renderPiechart(containerID) {
+        piechart = new Highcharts.Chart({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                renderTo: containerID
+            },
+            title: {
+                text: 'Number of Activities per Activity Type'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+            }],
+            data: {
+                csv: document.getElementById('PieCsv').innerHTML
+            }
+        });
+        return piechart;
+    }
+
+    function renderColumnchart(containerID) {
+        columnchart = new Highcharts.Chart({
+            chart: {
+                type: 'column',
+                renderTo: containerID
+            },
+            title: {
+                text: 'Number of Activities per Day of the Week'
+            },
+            xAxis: {
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '# of Activities'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            data: {
+                csv: document.getElementById('BarCsv').innerHTML
+            }
+        });
+        return columnchart;
+    }
+</script>

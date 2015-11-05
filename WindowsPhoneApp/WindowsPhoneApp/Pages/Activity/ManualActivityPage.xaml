@@ -1,0 +1,87 @@
+﻿<Page
+    x:Class="WindowsPhoneApp.ManualActivityPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsPhoneApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="Cowbell" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="Create activity" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!--
+        public long Id { get; set; }
+        public string AccountId { get; set; }
+        public ActivityType Type { get; set; }
+        public String Description { get; set; }
+        public int Steps { get; set; }
+        public DateTime Begin { get; set; }
+        public DateTime End { get; set; }
+        -->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Text="Type:" FontSize="30" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="Steps:" FontSize="30" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                       Text="Distance:" FontSize="30" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="3" Grid.Column="0"
+                       Text="Begin:" FontSize="30" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                       Text="End:" FontSize="30" VerticalAlignment="Center"/>
+
+            <!--enum ActivityType { Walking, Jogging, Running, Biking }-->
+            <ComboBox Grid.Row="0" Grid.Column="1" Name="TypeBox" Grid.ColumnSpan="2"
+                      SelectedIndex="0">
+                <ComboBoxItem Content="Walking"/>
+                <ComboBoxItem Content="Jogging"/>
+                <ComboBoxItem Content="Running"/>
+                <ComboBoxItem Content="Biking"/>
+            </ComboBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="StepsBox" Grid.ColumnSpan="2"
+                     InputScope="Number"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Name="DistanceBox" Grid.ColumnSpan="2"
+                     InputScope="Number" PlaceholderText="in miles"/>
+
+            <DatePicker Grid.Row="3" Grid.Column="1" Name="BeginDate" />
+            <TimePicker Grid.Row="3" Grid.Column="2" Name="BeginTime" />
+            <DatePicker Grid.Row="4" Grid.Column="1" Name="EndDate" />
+            <TimePicker Grid.Row="4" Grid.Column="2" Name="EndTime" />
+            
+            <Button Name="Submit" Grid.Row="5" Grid.ColumnSpan="3"
+                    VerticalAlignment="Bottom" FontSize="40" Content="Submit"
+                    HorizontalAlignment="Stretch" Click="Submit_Click"/>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,176 @@
+﻿@using Microsoft.AspNet.Identity;
+@model Website.ViewModels.AccountInformationViewModel
+
+@{
+    ViewBag.Title = "AccountInformation";
+}
+
+<h2>Account Information</h2>
+<div class="container">
+    <h4>@Html.DisplayFor(model => model.FullName)</h4>
+    <hr />
+    <div class="row">
+        <!-- Basic Account Info -->
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Info</div>
+                <div class="panel-body">
+                    <div>
+                        <table id="infoTable"> 
+                            <tr>
+                                <td>
+                                    <b>Full Name:</b>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.FullName)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Preferred Name:</b>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.PreferredName)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Birthdate:</b>
+                                </td>
+                                <td>
+                                    @Model.Birthdate.ToString("MM-dd-yyyy")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Sex:</b>
+                                </td>
+                                <td>
+                                    @{
+                                        string sex = "";
+                                        if (Model.Sex.HasValue)
+                                        {
+                                            if (!Model.Sex.Value)
+                                            {
+                                                sex = "Male";
+                                            }
+                                            else
+                                            {
+                                                sex = "Female";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            sex = "Unspecified";
+                                        }
+                                        @sex
+                                    }
+                                </td>
+                            </tr>
+
+                            <tr>
+                                @*@if (ViewBag.ShowSensitive) {*@
+                                <td>
+                                    <b>Zip Code:</b>
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(model => model.Zip)
+                                </td>
+                            </tr>
+                            @{
+                                var loggedUserID = User.Identity.GetUserId(); // ID of the user current logged in to the Website
+                                string currentId = ViewBag.Id; // ID of the account loaded in this page
+                            }
+
+                            @if (loggedUserID.Equals(currentId)) // Hide additional personal data if User is not the owner of the page
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(model => model.Weight)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(model => model.Weight) lbs.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(model => model.Height)
+                                    </td>
+                                    <td>
+                                        @{
+                                int feet = Model.Height / 12;
+                                int inches = Model.Height % 12;
+                                string height = feet + "' " + inches + "\"";
+                                @height
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team List -->
+            <div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">@Html.DisplayFor(model => model.PreferredName)'s Teams</div>
+                    <div class="panel-body">
+                        @{
+                            foreach (var td in Model.Teams)
+                            {
+                                <a href="/TeamInfo/TeamDashboard/@td.Id">@td.TeamName:</a> @td.Status <br />
+                            }
+                        }
+                        <br />
+                        <p>
+                            @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+                            @Html.ActionLink("View Other Users", "ViewAllUsers")
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+        <!-- Earned Badges -->
+        <div class="col-md-6">
+            <div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">@Html.DisplayFor(model => model.PreferredName)'s Badges</div>
+                    <div class="panel-body">
+                        <table id="badges-table">
+                            @{
+                                foreach (var bd in Model.EarnedBadges)
+                                {
+                                    <tr>
+                                        <td>@bd.BadgeName</td>
+                                        <td style="padding-left:50px">@bd.Date</td>
+                                        @{string link = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&name=Cowbell- The Best Damn Fitness App on the Market&caption=I earned a Badge!&description=" + Model.PreferredName + " earned the Cowbell Badge '" + bd.BadgeName + "'";}
+                                        <td style="padding-left:50px"><a href="@link" class="btn btn-info" role="button">Share to Facebook</a><a href="https://twitter.com/share?text= @Model.PreferredName earned the Cowbell Badge '@bd.BadgeName'&hashtags=Cowbell&url=http://se4.azurewebsites.net" class='btn btn-info' role='button'>Tweet</a></td>
+                                    </tr>
+                                }
+                                foreach (var bd in Model.UnearnedBadges)
+                                {
+                                    <tr>
+                                        <td>@bd.BadgeName</td>
+                                        <td>@bd.Date</td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+</div>
+
+<style>
+    #infoTable td {
+        width:150px;
+    }
+</style>

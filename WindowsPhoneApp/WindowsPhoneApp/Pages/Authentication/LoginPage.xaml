@@ -1,0 +1,55 @@
+﻿<Page
+    x:Class="WindowsPhoneApp.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FacebookControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:facebookControls="using:Facebook.Client.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--user information-->
+            <StackPanel HorizontalAlignment="Right">
+                <TextBlock 
+                    HorizontalAlignment="Center"
+                    Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
+            </StackPanel>
+
+            <!--ContentPanel - place additional content here-->
+            <Grid x:Name="ContentPanel" Margin="0,14,0,0" Grid.RowSpan="2">
+
+                <!-- Login control -->
+                <facebookControls:LoginButton 
+                    x:Name="LoginButton"
+                    Width="180px"
+                    Height="60px"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom" Margin="91,0,89,123"/>
+                <TextBlock
+                    Name="CantLogin"
+                    FontSize="25"
+                    HorizontalAlignment="Center"
+                    Text="Can't log in without a network"
+                    Visibility="Collapsed"
+                    VerticalAlignment="Bottom" Margin="0,0,0,183"/>
+                <TextBlock x:Name="Title" 
+                    TextWrapping="Wrap" 
+                    Text="Cowbell" 
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    TextAlignment="Center"
+                    Height="82" Width="340" FontSize="72" Margin="10,0"/>
+                <Image Source="/Assets/sign-in-with-twitter-gray.png" HorizontalAlignment="Left" Height="32" Margin="90,468,0,0" VerticalAlignment="Top" Width="181" Tapped="Image_Tapped"/>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

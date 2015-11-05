@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="WindowsPhoneApp.GatherActivityPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsPhoneApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Button 
+            Name="RecordButton"
+            Content="Start Activity"
+            HorizontalAlignment="Stretch"
+            Margin="10,0,0,20"
+            VerticalAlignment="Bottom"
+            Height="105"
+            IsEnabled="False"
+            Tapped="RecordButton_Tapped"/>
+        <TextBlock 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Bottom"
+            Text="Don't lock your phone while recording" FontSize="14"/>
+        <TextBlock
+            Name="StepCounter"
+            HorizontalAlignment="Left" 
+            Margin="10,73,0,0"
+            Text="Steps: 0" 
+            VerticalAlignment="Top" FontSize="24"/>
+        <TextBlock
+            Name="DistanceDisplay"
+            HorizontalAlignment="Left" 
+            Margin="10,103,0,0"
+            Text="Distance: 0" 
+            VerticalAlignment="Top" FontSize="24"/>
+        <TextBlock
+            Name="DurationDisplay"
+            HorizontalAlignment="Left" 
+            Margin="10,44,0,0"
+            Text="Duration: 0" 
+            VerticalAlignment="Top" FontSize="24"/>
+        <Maps:MapControl Name="Map" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Height="371" Width="380" Loaded="Map_Loaded" MapServiceToken=""/>
+        <ProgressRing Name="GPSSpinner" IsActive="True" HorizontalAlignment="Left" Margin="169,289,0,0" VerticalAlignment="Top" Background="Transparent"/>
+        <TextBlock Name="GPSSpinnerLabel" HorizontalAlignment="Left" Margin="142,265,0,0" Text="Waiting for GPS" VerticalAlignment="Top" FontSize="16"/>
+    </Grid>
+</Page>

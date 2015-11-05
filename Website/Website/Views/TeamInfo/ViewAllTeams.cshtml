@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Website.Models.Team>
+
+@{
+    ViewBag.Title = "ViewAllTeams";
+}
+
+<h2>ViewAllTeams</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            <!--@Html.ActionLink("Details", "TeamInformation", new { id = item.Id })-->
+            <a href="/TeamInfo/TeamInformation/@item.Id">Details</a>
+        </td>
+    </tr>
+}
+
+</table>

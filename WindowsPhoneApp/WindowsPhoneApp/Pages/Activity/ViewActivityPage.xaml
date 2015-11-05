@@ -1,0 +1,58 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsPhoneApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    x:Class="WindowsPhoneApp.ViewActivityPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Button 
+            Name="HomeButton"
+            Content="Home"
+            HorizontalAlignment="Stretch"
+            Margin="10,0,0,20"
+            VerticalAlignment="Bottom"
+            Height="105"
+            Tapped="HomeButton_Tapped"/>
+        <Button 
+            Name="EditButton"
+            Content="Edit"
+            HorizontalAlignment="Stretch"
+            Margin="10,0,0,111"
+            VerticalAlignment="Bottom"
+            Height="105"
+            Tapped="EditButton_Tapped"/>
+        
+        <TextBlock
+            Name="StepCounter"
+            HorizontalAlignment="Left" 
+            Margin="10,73,0,0"
+            Text="Steps: 0" 
+            VerticalAlignment="Top" FontSize="24"/>
+        
+        <TextBlock
+            Name="DistanceDisplay"
+            HorizontalAlignment="Left" 
+            Margin="10,103,0,0"
+            Text="Distance: 0" 
+            VerticalAlignment="Top" FontSize="24"/>
+        
+        <TextBlock
+            Name="DurationDisplay"
+            HorizontalAlignment="Left" 
+            Margin="10,44,0,0"
+            Text="Duration: 0" 
+            VerticalAlignment="Top" FontSize="24"/>
+        <Maps:MapControl Name="Map" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Height="301" Width="380"/>
+        <TextBlock
+        	x:Name="TypeDisplay"
+        	HorizontalAlignment="Left" 
+        	Margin="197,73,0,0"
+        	Text="Type: " 
+        	VerticalAlignment="Top" FontSize="24"/>
+    </Grid>
+</Page>

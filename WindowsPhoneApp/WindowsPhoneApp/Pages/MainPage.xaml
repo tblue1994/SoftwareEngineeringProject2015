@@ -1,0 +1,149 @@
+﻿<Page
+    x:Class="WindowsPhoneApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsPhoneApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Name="Home" Icon="Home" Label="Home" Visibility="Collapsed" Click="HomeTapped"/>
+                <AppBarButton Name="LogOut" Icon="ClosePane" Label="Log out" Visibility="Visible" Click="LogoutTapped"/>
+                <AppBarButton Name="Find" Icon="Find" Label="Find" Visibility="Visible" Click="FindTapped"/>
+                <AppBarButton Name="StartActivity" Label="Start activity" Visibility="Visible" Click="StartActivityTapped">
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/running.png">
+                        </BitmapIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Name="Edit" Label="Edit profile" Visibility="Collapsed" Click="EditTapped"/>
+                <AppBarButton Name="Create" Label="Create team" Visibility="Collapsed" Click="CreateTeamTapped"/>
+                <AppBarButton Name="Status" Icon="Emoji2" Label="Share mood" Visibility="Visible" Click="StatusTapped"/>
+                <AppBarButton Name="EatFood" Label="Track food" Visibility="Visible" Click="EatFood_Click"/>
+                <AppBarButton Name="SetGoal" Label="Set a goal" Visibility="Collapsed" Click="SetGoalTapped"/>
+                <AppBarButton Name="Challenge" Label="Challenge someone" Visibility="Collapsed" Click="ChallengeClick"/>
+                <AppBarButton Name="ManualActivity" Label="Manually enter activity" Visibility="Visible" Click="ManualActivity_Click"/>
+                <AppBarButton Name="ChangeUnits" Label="Use ye olde units" Visibility="Visible" Click="ChangeUnits_Click"/>
+                <AppBarButton Name="DeleteAccount" Label="Delete your account" Visibility="Visible" Click="DeleteAccount_Click"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid  x:Name="LayoutRoot" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Pivot Grid.Row="1" Grid.Column="0" Name="CentralPivot" Title=" "
+               HorizontalAlignment="Stretch"
+               PivotItemLoading="CentralPivot_PivotItemLoading">
+            <PivotItem Header="Feed">
+                <Grid HorizontalAlignment="Stretch" Height="458" Margin="0,0,-0.333,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Image Name="Profile" Grid.Row="0" Grid.Column="0"
+                           Width="70" Height="70"/>
+                    <TextBlock Name="Name" Grid.Row="0" Grid.Column="2"
+                               Grid.ColumnSpan="2" FontSize="25"/>
+
+                    <TextBlock Text="Today's Distance:" FontSize="15" Grid.Row="1" Grid.Column="0"/>
+                    <TextBlock Text="Today's Duration:" FontSize="15" Grid.Row="2" Grid.Column="0"/>
+                    <TextBlock Text="Today's Steps:" FontSize="15" Grid.Row="3" Grid.Column="0"/>
+
+                    <ProgressBar Name="DistanceBar" Grid.Row="1" Grid.Column="2"
+                                 HorizontalAlignment="Stretch"/>
+                    <ProgressBar Name="DurationBar" Grid.Row="2" Grid.Column="2"
+                                 HorizontalAlignment="Stretch"/>
+                    <ProgressBar Name="StepsBar" Grid.Row="3" Grid.Column="2"
+                                 HorizontalAlignment="Stretch"/>
+                    
+                    <TextBlock Name="Distance" FontSize="15" Grid.Row="1" Grid.Column="3"/>
+                    <TextBlock Name="Duration" FontSize="15" Grid.Row="2" Grid.Column="3"/>
+                    <TextBlock Name="Steps" FontSize="15" Grid.Row="3" Grid.Column="3"/>
+
+                    <ScrollViewer Grid.Row="4" Grid.ColumnSpan="4" VerticalScrollMode="Enabled"
+                                  HorizontalAlignment="Stretch">
+                        <StackPanel HorizontalAlignment="Stretch">
+                            <StackPanel Name="Feed"/>
+                            <Rectangle Fill="Black" Height="50"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                    
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Herds">
+                <Grid Name="TeamsGrid" Margin="0,0,-0.333,0.333">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <ListView Grid.Row ="0" Name="Teams"/>
+                    <TextBlock Grid.Row="1" Text="Invitations:" FontSize="30" Name="InvitationsLabel"/>
+                    <ListView Grid.Row="2" Name="Invitations"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Badges">
+                <ScrollViewer VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Visible" Height="400"
+                              VerticalAlignment="Top">
+                    <Grid Name="BadgesGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Earned badges" Grid.Row="0" FontSize="30"/>
+                        <StackPanel Grid.Row="1" Name="EarnedBadges" Height="auto" />
+                        <Rectangle VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="10"
+                                Grid.Row="2" Fill="#FF424242" Margin="0,15"/>
+                        <TextBlock Text="Unearned badges" Grid.Row="3" FontSize="30"/>
+                        <StackPanel Grid.Row="4" Name="UnearnedBadges" Height="auto" />
+                    </Grid>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="Goals" HorizontalAlignment="Stretch">
+                <ScrollViewer HorizontalAlignment="Stretch">
+                    <StackPanel Name="GoalsGrid" HorizontalAlignment="Stretch">
+                        <TextBlock Text="Current Goals:" FontSize="30"/>
+                        <StackPanel Name="Goals" Height="auto"
+                                  HorizontalAlignment="Stretch"/>
+
+                        <TextBlock Text="Challenges:" FontSize="30"/>
+                        <StackPanel Name="Challenges" Height="auto"
+                                  HorizontalAlignment="Stretch"/>
+
+                        <TextBlock Text="Completed:" FontSize="30"/>
+                        <StackPanel Name="Completed" Height="auto"
+                                  HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    
+    </Grid>
+</Page>

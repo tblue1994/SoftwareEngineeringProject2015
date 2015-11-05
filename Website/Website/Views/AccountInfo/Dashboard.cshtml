@@ -1,0 +1,412 @@
+﻿@model Website.ViewModels.PersonalDashboardViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    $ {
+        demo .css;
+    }
+</style>
+@if (Model.CanShare)
+{
+    <h2>Your Dashboard</h2>
+}
+else
+{
+    <h2>@(Model.FullName+"'s") Dashboard</h2>
+}
+
+@(Model.FullName)
+<br>@Html.ActionLink("Account Information", "AccountInformation", new { id = Model.Id }, null)
+
+
+<pre id="TwoDayCsv" style="display:none">@(Model.TwoDayCSV)</pre>
+<pre id="ReportCsv" style="display:none">@(Model.ReportCSV)</pre>
+<pre id="TotalCsv" style="display:none">@(Model.TotalCSV)</pre>
+<pre id="GoalCsv" style="display:none">@(Model.GoalCSV)</pre>
+
+<script type="text/javascript">
+    $(function () {
+
+        piechart = renderPiechart("piechart");
+        fpcchart = renderFpcchart("fpcchart");
+        barchart = renderBarchart("barchart");
+        linechart = renderLinechart("linechart");
+    });
+</script>
+<script src="https://rawgithub.com/laff/technical-indicators/master/technical-indicators.src.js"></script>
+
+<table>
+    <tr>
+        <td>
+            <div id="piechart" style="height: 420px; width:420px; margin: 0 auto" />
+        </td>
+        <td>
+            <div id="fpcchart" style="height: 420px; width:420px; margin: 0 auto" />
+        </td>
+        <td>
+            <div id="barchart" style="height: 420px; width:420px; margin: 0 auto" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="loadChartOnModal('piechart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+        <td>
+            <button onclick="loadChartOnModal('fpcchart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+        <td>
+            <button onclick="loadChartOnModal('barchart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="linechart" style="height: 420px; width:720px; margin: 0 auto" />
+        </td>
+        <td>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Challenge</div>
+                <div class="panel-body" style="text-align:center">
+                    <h3>Your challenge for today is</h3><br> <h1><b>@Model.Prediction</b> Miles</h1> <br/>  <h3>Can you beat it?</h3>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button onclick="loadChartOnModal('linechart');" style="display:block; margin:0 auto; margin-bottom:90px;" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                View Details
+            </button>
+        </td>
+    </tr>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="min-width:650px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body" style"display:block; margin:0 auto;">
+                <div id="mchart"></div>
+            </div>
+            <div class="modal-shared-content">
+                <!-- Edit Facebook Shared Content Here-->
+                <table id="insightTable"></table>
+            </div>
+            <!--
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            -->
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').focus();
+
+    })
+
+    function loadChartOnModal(chartName) {
+        switch (chartName) {
+            case "piechart":
+                modalchart = renderPiechart("mchart");
+                $('.modal-body').find('#highcharts-0').css('margin', '0 auto');
+                $(".modal-title").text("Total Duration per Activity Type");
+                @{string link = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=https://se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description=" + Model.PiechartInsight;
+
+                  string tlink = "https://twitter.com/share?text=" + Model.PiechartInsight + " -Cowbell&hashtags=Insight&url=http://se4.azurewebsites.net";
+                  }
+                @if(Model.CanShare) {
+                    @:$("#insightTable").html("<tr><td>@Model.PiechartInsight</td><td><a href='@link' class='btn btn-info' role='button'>Share to Facebook</a><a href='@tlink'class='btn btn-info' role='button'>Tweet</a></td></tr>");
+                                }
+                // document.getElementsByClassName("modal-shared-content")[0].innerHTML = "@Model.PiechartInsight <a href='@link' class='btn btn-info' role='button'>Share to Facebook</a>";
+                break;
+            case "linechart":
+                modalchart = renderLinechart("mchart");
+                $('.modal-body').find('#highcharts-2').css('margin', '0 auto');
+                $(".modal-title").text("Daily Distance & Duration Over Time");
+                @{string link1 = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description=" + Model.LinechartInsight;
+                  string tlink1 = "https://twitter.com/share?text=" + Model.LinechartInsight + " -Cowbell&hashtags=Insight&url=http://se4.azurewebsites.net";
+                  }
+                @if(Model.CanShare) {
+                    @:document.getElementsByClassName("modal-shared-content")[0].innerHTML = "@Model.LinechartInsight <a href='@link1' class='btn btn-info' role='button'>Share to Facebook</a><a href='@tlink1'class='btn btn-info' role='button'>Tweet</a>";
+                                }
+                break;
+            case "barchart":
+                modalchart = renderBarchart("mchart");
+                $('.modal-body').find('#highcharts-6').css('margin', '0 auto');
+                $(".modal-title").text("Yesterday vs. Today Step Totals");
+
+                @{
+                    string link2 = "";
+                    string tlink2 = "";
+                    if (Model.BarchartInsight == null)
+                    {
+                        link2 = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description= You don't have any recorded activities form today or yesterday. Why not go record one on our app?";
+                        tlink2 = "https://twitter.com/share?text=You don't have any recorded activities form today or yesterday. Why not go record one on our app? -Cowbell&hashtags=Insight&url=http://se4.azurewebsites.net";
+                    }
+                    else
+                    {
+                        link2 = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description=" + Model.BarchartInsight;
+                        tlink2 = "https://twitter.com/share?text=" + Model.BarchartInsight + " -Cowbell&hashtags=Insight&url=http://se4.azurewebsites.net";
+                    }
+                    //link2 = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description="+ Model.BarchartInsight;
+                }
+                @if(Model.CanShare) {
+                    @:document.getElementsByClassName("modal-shared-content")[0].innerHTML = "@Model.BarchartInsight <a href='@link2' class='btn btn-info' role='button'>Share to Facebook</a><a href='@tlink2'class='btn btn-info' role='button'>Tweet</a>";
+                                }
+                break;
+            case 'fpcchart':
+                modalchart = renderFpcchart("mchart");
+                $('.modal-body').find('#highcharts-8').css('margin', '0 auto');
+                $(".modal-title").text("Goal Progress");
+                @{
+                    string link3 = "";
+                    string description = "";
+                    string tlink3 = "";
+                    if (Model.Closest == null)
+                    {
+                        description = "You don't have any goals :(";
+                        link3 = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description= You don't have any goals :(";
+                        tlink3 = "https://twitter.com/share?text=" + description + " -Cowbell&hashtags=Insight&url=http://se4.azurewebsites.net";
+                    }
+                    else
+                    {
+                        description = "You are " + 100 * Math.Round(Model.Closest.Progress / Model.Closest.Target.TargetNumber, 1) + "% of the way to " + Model.Closest.Description + "!";
+                        link3 = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description= You are " + 100 * Math.Round(Model.Closest.Progress / Model.Closest.Target.TargetNumber, 1) + "% of the way to " + Model.Closest.Description + "!";
+                        tlink3 = "https://twitter.com/share?text=" + description + " -Cowbell&hashtags=Insight&url=http://se4.azurewebsites.net";
+                    }
+                    //string link3 = "https://www.facebook.com/dialog/feed?app_id=1588237724739511&redirect_uri=http://se4.azurewebsites.net&link=se4.azurewebsites.net&picture=i.imgur.com/8b4dyCI.png&name=Cowbell- The Best Damn Fitness App on the Market&caption=I gained insight!&description= You are "+ 100*Math.Round(Model.Closest.Progress/Model.Closest.Target.TargetNumber,1) + "% of the way to "+ Model.Closest.Description + "!";
+                }
+
+                @if(Model.CanShare) {
+                    @:document.getElementsByClassName("modal-shared-content")[0].innerHTML = "@description <a href='@link3' class='btn btn-info' role='button'>Share to Facebook</a><a href='@tlink3'class='btn btn-info' role='button'>Tweet</a>";
+                                }
+                break;
+        } // End of Switch
+    }
+</script>
+
+<!-- Chart Rendering Functions -->
+<script type="text/javascript">
+    function renderPiechart(containerId) {
+        piechart = new Highcharts.Chart({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                renderTo: containerId
+            },
+            title: {
+                text: 'Total Duration per Activity Type'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer'
+                }
+            },
+            series: [{
+                type: 'pie',
+            }],
+            data: {
+                csv: document.getElementById('TotalCsv').innerHTML
+            }
+        });
+        return piechart;
+    }
+
+    function renderLinechart(containerID) {
+        linechart = new Highcharts.Chart({
+            chart: {
+                renderTo: containerID
+            },
+            title: {
+                text: 'Total Daily Distance & Duration'
+            },
+
+            xAxis: {
+                type: 'datetime'
+            },
+
+            yAxis: [{
+            }, { // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Total Daily Distance',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value} mi',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                }
+
+            }, { // Tertiary yAxis
+                gridLineWidth: 1,
+                title: {
+                    text: 'Total Daily Duration',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                labels: {
+                    format: '{value} hrs',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                opposite: true
+            }],
+
+            tooltip: {
+                crosshairs: true,
+                shared: true
+            },
+
+            rangeSelector: {
+                selected: 1
+            },
+
+            legend: {
+                enabled: true
+            },
+
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: false,
+                    }
+                }
+            },
+
+            series: [{
+                name: 'Total Daily Activity Distance',
+                id: 'primary',
+                yAxis: 1,
+                tooltip: {
+                    valueSuffix: ' Miles'
+                }
+
+            }, {
+                name: 'Total Daily Activity Duration',
+                yAxis: 2,
+                tooltip: {
+                    valueSuffix: ' Hours'
+                }
+
+            }, {
+                name: '5-day Distance SMA',
+                linkedTo: 'primary',
+                yAxis: 1,
+                showInLegend: true,
+                type: 'trendline',
+                algorithm: 'SMA',
+                periods: 5,
+                tooltip: {
+                    valueSuffix: ' Miles'
+                }
+            }],
+            data: {
+                dateFormat: 'mm/dd/YYYY',
+                csv: document.getElementById('ReportCsv').innerHTML
+            }
+        });
+
+        return linechart;
+
+    }
+
+    function renderBarchart(containerID) {
+        barchart = new Highcharts.Chart({
+            chart: {
+                type: 'bar',
+                renderTo: containerID
+            },
+            title: {
+                text: 'Yesterday vs. Today Step Totals'
+            },
+            yAxis: {
+                title: {
+                    text: '# of Steps'
+                }
+            },
+            data: {
+                csv: document.getElementById('TwoDayCsv').innerHTML
+            },
+
+            legend: {
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            }
+        });
+        return barchart;
+    }
+
+    function renderFpcchart(containerID) {
+        fpcchart = new Highcharts.Chart({
+            chart: {
+                type: 'column',
+                renderTo: containerID
+            },
+            title: {
+                text: 'Goal Progress'
+            },
+            yAxis: [{
+                title: {
+                    text: 'Percent (%)'
+                }
+            }],
+            legend: {
+                shadow: false,
+                enabled: false
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'percent'
+                }
+            },
+            data: {
+                csv: document.getElementById('GoalCsv').innerHTML
+            }
+        });
+        return fpcchart;
+    }
+</script>
+
+<style>
+    #insightTable {
+        width: 100%;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+</style>

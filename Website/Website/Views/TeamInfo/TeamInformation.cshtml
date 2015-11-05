@@ -1,0 +1,34 @@
+﻿@model Website.Models.Team
+@using Website.Models
+
+@{
+    ViewBag.Title = "Team Information";
+}
+
+<h2>@Html.DisplayFor(model => model.Name) - Information</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+
+ 
+    </dl>
+    <h4>Members</h4>
+    <dl>
+
+        @{
+            foreach (var m in ViewBag.Members)
+            {
+
+                ///<!--<dt>@Html.ActionLink((string)m.FullName, "AccountInformation", "AccountInfo", m.Id)</dt>-->
+        <dt><a href="/AccountInfo/Dashboard/@m.Id">@m.FullName</a></dt>
+            }
+        }
+    </dl>
+
+        
+</div>
+<p>
+    @Html.ActionLink("View All Teams", "ViewAllTeams")
+</p>

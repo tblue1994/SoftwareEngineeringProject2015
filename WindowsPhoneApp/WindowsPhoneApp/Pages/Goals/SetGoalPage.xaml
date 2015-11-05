@@ -1,0 +1,86 @@
+﻿<Page
+    x:Class="WindowsPhoneApp.SetGoalPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsPhoneApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Panel -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="Cowbell" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Name="Title" Text="" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--public enum TargetActivityType { Running, Walking, Jogging, Biking, General }-->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" FontSize="30"
+                       VerticalAlignment="Center"/>
+            <ComboBox Name="TypeBox" Grid.Row="0" Grid.Column="1" FontSize="30">
+                <ComboBoxItem Content="bike" Tag="Biking"/>
+                <ComboBoxItem Content="jog" Tag="Jogging"/>
+                <ComboBoxItem Content="run" Tag="Running"/>
+                <ComboBoxItem Content="walk" Tag="Walking"/>
+                <ComboBoxItem Content="any" Tag="General"/>
+            </ComboBox>
+
+            <!--public enum TargetTimeline { SingleActivity, Daily, Weekly, Monthly, Cumulative }-->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Timeline:" FontSize="30"
+                       VerticalAlignment="Center"/>
+            <ComboBox Name="TimelineBox" Grid.Row="1" Grid.Column="1" FontSize="30">
+                <ComboBoxItem Content="in one activity" Tag="SingleActivity"/>
+                <ComboBoxItem Content="daily" Tag="Daily"/>
+                <ComboBoxItem Content="monthly" Tag="Weekly"/>
+                <ComboBoxItem Content="weekly" Tag="Monthly"/>
+                <ComboBoxItem Content="cumulative" Tag="Cumulative"/>
+            </ComboBox>
+
+            <!--public enum TargetType { Steps, Distance, Duration }-->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Measure:" FontSize="30"
+                       VerticalAlignment="Center"/>
+            <ComboBox Name="MeasureBox" Grid.Row="2" Grid.Column="1" FontSize="30">
+                <ComboBoxItem Content="miles" Tag="Distance"/>
+                <ComboBoxItem Content="hours" Tag="Duration"/>
+                <ComboBoxItem Content="steps" Tag="Steps"/>
+            </ComboBox>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Count:" FontSize="30"
+                       VerticalAlignment="Center"/>
+            <TextBox Name="NumberBox" Grid.Row="3" Grid.Column="1" FontSize="30"
+                     InputScope="Number"/>
+
+            <Button Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+                    HorizontalAlignment="Stretch"
+                    Content="Set" FontSize="40" Height="100"
+                    Tapped="Submit"/>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,65 @@
+﻿<Page
+    x:Class="WindowsPhoneApp.RecordFoodPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsPhoneApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="Cowbell" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="Record food" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Name: " FontSize="30"
+                       VerticalAlignment="Center"/>
+            <TextBox Grid.Row="0" Grid.Column="1"
+                     Grid.ColumnSpan="2" Name="NameInput" FontSize="30"/>
+
+            <!-- public enum Measurement { Ounce, FluidOunce, Cup, Serving } -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Amount: " FontSize="30"
+                       VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="Number" FontSize="30"
+                     InputScope="Number"/>
+            <ComboBox Grid.Row="1" Grid.Column="2" Name="Units" FontSize="30"
+                      SelectedIndex="0">
+                <ComboBoxItem Content="ounces" Tag="Ounce"/>
+                <ComboBoxItem Content="fluid ounces" Tag="FluidOunce"/>
+                <ComboBoxItem Content="cups" Tag="Cup"/>
+                <ComboBoxItem Content="servings" Tag="Serving"/>
+            </ComboBox>
+            
+            <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Name="Submit"
+                    HorizontalAlignment="Stretch" FontSize="30" Content="Submit"
+                    VerticalAlignment="Bottom" Click="Submit_Click"/>
+
+        </Grid>
+    </Grid>
+</Page>

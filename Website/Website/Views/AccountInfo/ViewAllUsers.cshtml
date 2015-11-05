@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Website.Models.Account>
+
+@{
+    ViewBag.Title = "ViewAllUsers";
+}
+
+<h2>All Users</h2>
+
+<table class="table">
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        
+        <td>
+            <a href="/AccountInfo/AccountInformation/@item.Id">Details</a>
+        </td>
+    </tr>
+}
+
+</table>
